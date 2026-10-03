@@ -1,4 +1,4 @@
-\# Kubernetes Policy-as-Code with Kyverno
+# Kubernetes Policy-as-Code with Kyverno
 
 
 
@@ -10,7 +10,7 @@ This tutorial explores two complementary security controls: checking a manifest 
 
 
 
-\## Intended learning outcomes
+## Intended learning outcomes
 
 
 
@@ -18,15 +18,15 @@ After completing the full tutorial, you should be able to:
 
 
 
-1\. Explain how the Kyverno CLI and Kubernetes admission enforcement provide complementary policy checks.
+1. Explain how the Kyverno CLI and Kubernetes admission enforcement provide complementary policy checks.
 
-2\. Identify a Deployment that violates a policy prohibiting hostPath volumes, correct it, and verify the result.
+2. Identify a Deployment that violates a policy prohibiting hostPath volumes, correct it, and verify the result.
 
-3\. Explain the interactions between the policy, workload manifest, Kubernetes API server, and Kyverno admission controller.
+3. Explain the interactions between the policy, workload manifest, Kubernetes API server, and Kyverno admission controller.
 
 
 
-\## Environment
+## Environment
 
 
 
@@ -38,7 +38,7 @@ Run the tutorial commands in that terminal.
 
 
 
-\## Development status
+## Development status
 
 
 
