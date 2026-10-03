@@ -2,17 +2,11 @@
 
 
 
-A Kubernetes manifest can be syntactically valid while requesting
-
-unsafe access to the underlying node.
+A Kubernetes manifest can be syntactically valid while requesting unsafe access to the underlying node.
 
 
 
-This tutorial explores two complementary security controls:
-
-checking a manifest before deployment with the Kyverno CLI, and
-
-enforcing a policy inside Kubernetes during admission.
+This tutorial explores two complementary security controls: checking a manifest before deployment with the Kyverno CLI, and enforcing a policy inside Kubernetes during admission.
 
 
 
@@ -24,17 +18,11 @@ After completing the full tutorial, you should be able to:
 
 
 
-1\. Explain how the Kyverno CLI and Kubernetes admission enforcement
+1\. Explain how the Kyverno CLI and Kubernetes admission enforcement provide complementary policy checks.
 
-&#x20;  provide complementary policy checks.
+2\. Identify a Deployment that violates a policy prohibiting hostPath volumes, correct it, and verify the result.
 
-2\. Identify a Deployment that violates a policy prohibiting hostPath
-
-&#x20;  volumes, correct it, and verify the result.
-
-3\. Explain the interactions between the policy, workload manifest,
-
-&#x20;  Kubernetes API server, and Kyverno admission controller.
+3\. Explain the interactions between the policy, workload manifest, Kubernetes API server, and Kyverno admission controller.
 
 
 
@@ -42,9 +30,7 @@ After completing the full tutorial, you should be able to:
 
 
 
-Killercoda provides a temporary Kubernetes cluster and a terminal
-
-in your browser.
+Killercoda provides a temporary Kubernetes cluster and a terminal in your browser.
 
 
 
@@ -56,9 +42,5 @@ Run the tutorial commands in that terminal.
 
 
 
-This initial version checks that the Kubernetes environment starts
-
-correctly. The Kyverno installation and policy exercises will be
-
-added in subsequent development steps.
+This initial version checks that the Kubernetes environment starts correctly. The Kyverno installation and policy exercises will be added in subsequent development steps.
 
