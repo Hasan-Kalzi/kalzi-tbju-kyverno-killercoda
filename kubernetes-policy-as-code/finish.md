@@ -1,4 +1,4 @@
-\# Environment checkpoint complete
+# Environment checkpoint complete
 
 
 
