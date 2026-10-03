@@ -1,1 +1,21 @@
-
+{
+  "title": "Kubernetes Policy-as-Code with Kyverno",
+  "description": "Test Kubernetes security policies before deployment and enforce them during admission.",
+  "details": {
+    "intro": {
+      "text": "intro.md"
+    },
+    "steps": [
+      {
+        "title": "Check the Kubernetes environment",
+        "text": "step1.md"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "kubernetes-kubeadm-1node"
+  }
+}
