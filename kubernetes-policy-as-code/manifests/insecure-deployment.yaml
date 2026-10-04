@@ -1,1 +1,52 @@
+# This example deliberately violates the hostPath policy.
+apiVersion: apps/v1
+kind: Deployment
 
+metadata:
+  name: policy-demo
+
+spec:
+  # One Pod is enough to demonstrate the policy.
+  replicas: 1
+
+  # Identify the Pods managed by this Deployment.
+  selector:
+    matchLabels:
+      app: policy-demo
+
+  template:
+    metadata:
+      # These labels must match the Deployment's selector.
+      labels:
+        app: policy-demo
+
+    spec:
+      containers:
+        - name: demo
+          # Use a specific image version for the example.
+          image: busybox:1.36.1
+
+          # Keep the container running without reading the mounted files.
+          command: ["sleep", "3600"]
+
+          # Keep resource consumption small in the training environment.
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "100m"
+              memory: "32Mi"
+
+          volumeMounts:
+            # Expose the node's directory inside the container.
+            - name: node-config
+              mountPath: /host-etc
+              readOnly: true
+
+      volumes:
+        - name: node-config
+          # This hostPath field is the deliberate policy violation.
+          hostPath:
+            path: /etc
+            type: Directory
