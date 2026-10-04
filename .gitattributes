@@ -1,0 +1,2 @@
+# Use Unix line endings so shell scripts run in Killercoda's Linux environment.
+*.sh text eol=lf
