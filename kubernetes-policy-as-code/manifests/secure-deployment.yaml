@@ -1,1 +1,27 @@
+# This example satisfies the tutorial's hostPath policy.
+apiVersion: apps/v1
+kind: Deployment
 
+metadata:
+  # Use the same name because this is the corrected workload.
+  name: policy-demo
+
+spec:
+  # One Pod is enough to demonstrate the policy.
+  replicas: 1
+
+  # Identify the Pods managed by this Deployment.
+  selector:
+    matchLabels:
+      app: policy-demo
+
+  template:
+    metadata:
+      # These labels must match the Deployment's selector.
+      labels:
+        app: policy-demo
+
+    spec:
+      containers:
+        - name: demo
+          # Use the same
