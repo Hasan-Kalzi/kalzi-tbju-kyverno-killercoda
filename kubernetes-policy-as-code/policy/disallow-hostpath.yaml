@@ -1,1 +1,30 @@
+# Use Kyverno's CEL-based validation policy API.
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
 
+metadata:
+  # Identify this policy in commands and validation results.
+  name: disallow-hostpath
+
+spec:
+  # Reject a matching request when the validation expression is false.
+  validationActions:
+    - Deny
+
+  # Check Deployment creation and updates.
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+
+  validations:
+    # Allow Deployments without volumes.
+    # Otherwise, require every volume to avoid the hostPath type.
+    - expression: >-
+        !has(object.spec.template.spec.volumes) ||
+        object.spec.template.spec.volumes.all(volume, !has(volume.hostPath))
+      message: >-
+        hostPath volumes are forbidden because they expose
+        the Kubernetes node's filesystem to the workload.
