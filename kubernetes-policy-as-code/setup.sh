@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 # Stop on failed commands, unset variables, and failures inside pipelines.
