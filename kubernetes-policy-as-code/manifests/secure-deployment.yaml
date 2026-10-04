@@ -24,4 +24,27 @@ spec:
     spec:
       containers:
         - name: demo
-          # Use the same
+          # Use the same image as the rejected example.
+          image: busybox:1.36.1
+
+          # Keep the container running for verification.
+          command: ["sleep", "3600"]
+
+          # Keep resource consumption small in the training environment.
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "100m"
+              memory: "32Mi"
+
+          volumeMounts:
+            # Give the container its own working directory.
+            - name: work-data
+              mountPath: /work
+
+      volumes:
+        - name: work-data
+          # Create Pod-local storage without exposing a node directory.
+          emptyDir: {}
