@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Isolate setup options, variables and cleanup from the learner's terminal.
+(
+
 # Stop on failed commands, unset variables, and failures inside pipelines.
 set -euo pipefail
 
@@ -60,3 +63,4 @@ install -m 0755 "$SETUP_TEMP_DIR/kyverno" /usr/local/bin/kyverno
 kyverno version
 kubectl get pods -n kyverno
 echo "[setup] Installation complete."
+)
