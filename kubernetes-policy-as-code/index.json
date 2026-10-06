@@ -10,6 +10,21 @@
       {
         "title": "Check the Kubernetes environment",
         "text": "step1.md"
+      },
+      {
+        "title": "Test the policy before deployment",
+        "text": "step2.md",
+        "verify": "verify-policy.sh"
+      },
+      {
+        "title": "Enforce the policy during admission",
+        "text": "step3.md",
+        "verify": "verify-rejection.sh"
+      },
+      {
+        "title": "Deploy and verify the corrected workload",
+        "text": "step4.md",
+        "verify": "verify-deployment.sh"
       }
     ],
     "finish": {
