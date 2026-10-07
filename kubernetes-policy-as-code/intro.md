@@ -1,46 +1,65 @@
 # Kubernetes Policy-as-Code with Kyverno
 
+A Kubernetes manifest can be valid YAML while requesting access to sensitive files on a node. In this tutorial, a Deployment requests a read-only `hostPath` mount of the node's `/etc` directory. Read-only access still exposes the directory's contents.
 
-
-A Kubernetes manifest can be syntactically valid while requesting unsafe access to the underlying node.
-
-
-
-This tutorial explores two complementary security controls: checking a manifest before deployment with the Kyverno CLI, and enforcing a policy inside Kubernetes during admission.
-
-
+We will test a policy before deployment, enforce it when matching requests reach Kubernetes, and correct the workload without weakening the policy. This connects early developer feedback, deployment controls and verification of a running workload.
 
 ## Intended learning outcomes
 
+By the end of this tutorial, you should be able to:
 
+1. Explain why Kyverno CLI checks before deployment and policy enforcement during admission are complementary controls.
+2. Test allowed and denied Deployment manifests against the same policy, and distinguish a policy violation from a technical error.
+3. Explain how the policy, kubectl, Kubernetes API server, Kyverno admission controller and workload controllers interact.
+4. Correct the storage request, verify a ready workload, and explain the limits of this policy and the storage choice.
 
-After completing the full tutorial, you should be able to:
+## Workflow and architecture
 
+![Two complementary policy checks: the Kyverno CLI evaluates a local manifest before submission; the Kubernetes API server calls Kyverno during admission, rejects hostPath requests, and stores allowed Deployments for workload controllers to reconcile.](./architecture.svg)
 
+The CLI evaluates local files without creating workloads. In a CI pipeline, this could give feedback before a change is delivered; this tutorial runs that check in the browser terminal.
 
-1. Explain how the Kyverno CLI and Kubernetes admission enforcement provide complementary policy checks.
+Admission is a separate control. The API server asks Kyverno to evaluate matching requests against the installed policy before accepting a change. A manifest submitted directly to the API server must pass that control even if the sender bypassed the CLI check.
 
-2. Identify a Deployment that violates a policy prohibiting hostPath volumes, correct it, and verify the result.
+After acceptance, Kubernetes controllers and the node bring the workload into its requested state. We verify that later stage rather than treating acceptance alone as proof that a Pod is running.
 
-3. Explain the interactions between the policy, workload manifest, Kubernetes API server, and Kyverno admission controller.
+## What you will do
 
+| Step | Action | Purpose |
+| --- | --- | --- |
+| 1 | Check the Kubernetes environment. | Establish that the cluster is ready. |
+| 2 | Test both manifests with the Kyverno CLI. | Observe one denied and one allowed policy evaluation before deployment. |
+| 3 | Install the policy and submit the violating manifest. | Observe admission rejection for the intended policy reason. |
+| 4 | Deploy the corrected manifest and run all verifiers. | Confirm admission enforcement and one available workload together. |
 
+The policy is a CEL-based Kyverno `ValidatingPolicy` named `disallow-hostpath`. It uses the `Deny` action and matches Deployment creation and updates across namespaces. It does not cover every workload kind or every security requirement. The filename `secure-deployment.yaml` means that the example satisfies this particular policy.
 
-## Environment
+## Environment and prerequisites
 
+You need a browser and basic familiarity with Kubernetes Deployments, Pods and YAML. Killercoda supplies a temporary single-node Kubernetes cluster and terminal. The exercise uses no cloud subscription, payment credentials or external secrets.
 
+The automatic setup installs Kyverno and its CLI at version `1.19.1`, verifies the downloaded release files using SHA-256, waits for the controllers, and prepares the exercise files at:
 
-Killercoda provides a temporary Kubernetes cluster and a terminal in your browser.
+```text
+/root/kyverno-tutorial/kubernetes-policy-as-code
+```
 
+Wait until the terminal shows:
 
+```text
+[setup] Installation complete.
+```
 
-Run the tutorial commands in that terminal.
+Then continue to step 1. If setup reports an error, inspect that error before running the exercises. Starting a fresh scenario gives you a new environment; setup should run automatically.
 
+## Using the tutorial controls
 
+Run commands in the Killercoda terminal using the command buttons or by copying only the command text. The `{{exec}}` markers in the repository's Markdown are instructions to Killercoda and are not part of shell commands.
 
-## Development status
+Steps 2-4 have a **CHECK** button. Each button runs the corresponding verification script; exit code `0` means that verification passed. An expected denial from Kyverno or kubectl can have exit code `1` while the verifier succeeds, because rejection is the intended result.
 
+## References
 
-
-This initial version checks that the Kubernetes environment starts correctly. The Kyverno installation and policy exercises will be added in subsequent development steps.
-
+- [Kyverno ValidatingPolicy](https://kyverno.io/docs/policy-types/validating-policy/)
+- [Kubernetes admission webhooks](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
+- [Kubernetes volumes](https://kubernetes.io/docs/concepts/storage/volumes/)

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1060" viewBox="0 0 720 1060" role="img" aria-labelledby="title description">
+  <title id="title">Policy checks before deployment and during Kubernetes admission</title>
+  <desc id="description">A local policy file and manifest enter the Kyverno CLI, which reports pass or fail without creating a workload. During cluster admission, kubectl sends a Deployment request to the Kubernetes API server. The API server calls the Kyverno admission controller, which evaluates the installed policy and returns a decision. Violating requests are denied without storing the change. Accepted Deployments are stored and reconciled into Pods. Rollout verification checks the later running state.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/></marker>
+  </defs>
+  <style>
+    text { font-family: "DejaVu Sans", Arial, sans-serif; fill: #172a42; }
+    .heading { font-size: 27px; font-weight: 700; }
+    .label { font-size: 22px; font-weight: 700; }
+    .body { font-size: 19px; }
+    .small { font-size: 17px; fill: #475569; }
+    .line { fill: none; stroke: #475569; stroke-width: 2.5; marker-end: url(#arrow); }
+    .box { fill: #fff; stroke: #8aa1b9; stroke-width: 1.5; }
+  </style>
+  <rect width="720" height="1060" fill="#fff"/>
+  <text x="32" y="45" class="heading">One policy, two points of evaluation</text>
+
+  <rect x="28" y="74" width="664" height="282" rx="14" fill="#eef5fc" stroke="#cfdeed"/>
+  <text x="48" y="112" class="label">1. Before deployment</text>
+  <text x="48" y="142" class="body">Local files are evaluated without creating a workload.</text>
+
+  <rect x="48" y="184" width="180" height="88" rx="10" class="box"/>
+  <text x="138" y="219" text-anchor="middle" class="label">Policy file</text>
+  <text x="138" y="247" text-anchor="middle" class="body">+ manifest</text>
+
+  <path d="M 228 228 H 282" class="line"/>
+  <rect x="286" y="184" width="168" height="88" rx="10" class="box"/>
+  <text x="370" y="219" text-anchor="middle" class="label">Kyverno CLI</text>
+  <text x="370" y="247" text-anchor="middle" class="body">evaluate</text>
+
+  <path d="M 454 228 H 504" class="line"/>
+  <rect x="508" y="184" width="164" height="88" rx="10" class="box"/>
+  <text x="590" y="219" text-anchor="middle" class="label">Pass / fail</text>
+  <text x="590" y="247" text-anchor="middle" class="body">+ exit code</text>
+  <text x="48" y="316" class="body">This check can provide early feedback in a CI pipeline.</text>
+
+  <rect x="28" y="382" width="664" height="600" rx="14" fill="#f1f8f5" stroke="#cfe4d8"/>
+  <text x="48" y="422" class="label">2. During Kubernetes admission</text>
+
+  <rect x="48" y="454" width="252" height="88" rx="10" class="box"/>
+  <text x="174" y="487" text-anchor="middle" class="label">kubectl</text>
+  <text x="174" y="516" text-anchor="middle" class="body">submit Deployment</text>
+
+  <rect x="408" y="454" width="264" height="88" rx="10" class="box"/>
+  <text x="540" y="487" text-anchor="middle" class="label">Installed policy</text>
+  <text x="540" y="516" text-anchor="middle" class="body">disallow-hostpath</text>
+
+  <path d="M 174 542 V 586" class="line"/>
+  <path d="M 540 542 V 586" class="line"/>
+
+  <rect x="48" y="592" width="252" height="96" rx="10" class="box"/>
+  <text x="174" y="625" text-anchor="middle" class="label">Kubernetes</text>
+  <text x="174" y="655" text-anchor="middle" class="label">API server</text>
+
+  <rect x="408" y="592" width="264" height="96" rx="10" class="box"/>
+  <text x="540" y="625" text-anchor="middle" class="label">Kyverno admission</text>
+  <text x="540" y="655" text-anchor="middle" class="label">controller</text>
+
+  <path d="M 300 609 H 402" class="line"/>
+  <text x="352" y="594" text-anchor="middle" class="small">request</text>
+  <path d="M 408 670 H 306" class="line"/>
+  <text x="354" y="651" text-anchor="middle" class="small">decision</text>
+
+  <path d="M 174 688 V 766" class="line"/>
+  <text x="62" y="751" class="small">allowed</text>
+
+  <path d="M 288 688 V 725 H 540 V 766" class="line"/>
+  <text x="444" y="751" text-anchor="middle" class="small">hostPath: denied</text>
+
+  <rect x="48" y="772" width="252" height="88" rx="10" class="box"/>
+  <text x="174" y="805" text-anchor="middle" class="label">Stored Deployment</text>
+  <text x="174" y="834" text-anchor="middle" class="body">controllers reconcile</text>
+
+  <rect x="408" y="772" width="264" height="88" rx="10" fill="#fff4f1" stroke="#d9a99c" stroke-width="1.5"/>
+  <text x="540" y="805" text-anchor="middle" class="label">Rejected request</text>
+  <text x="540" y="834" text-anchor="middle" class="body">no change stored</text>
+
+  <path d="M 174 860 V 900 H 408" class="line"/>
+  <text x="180" y="927" class="small">scheduling + startup</text>
+
+  <rect x="414" y="878" width="258" height="72" rx="10" class="box"/>
+  <text x="543" y="908" text-anchor="middle" class="label">Pod</text>
+  <text x="543" y="935" text-anchor="middle" class="body">verify rollout + storage</text>
+
+  <text x="32" y="1018" class="body">Admission acceptance and a ready workload are separate checks.</text>
+  <text x="32" y="1046" class="small">The CLI and admission evaluate the same rule; rollout checks the live result.</text>
+</svg>
