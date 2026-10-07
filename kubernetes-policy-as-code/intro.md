@@ -54,7 +54,7 @@ Then continue to step 1. If setup reports an error, inspect that error before ru
 
 ## Using the tutorial controls
 
-Run commands in the Killercoda terminal using the command buttons or by copying only the command text. The `{{exec}}` markers in the repository's Markdown are instructions to Killercoda and are not part of shell commands.
+Run commands in the Killercoda terminal using the command buttons or by copying only the command text. The action markers in the repository's Markdown are instructions to Killercoda and must be excluded from shell commands.
 
 Steps 2-4 have a **CHECK** button. Each button runs the corresponding verification script; exit code `0` means that verification passed. An expected denial from Kyverno or kubectl can have exit code `1` while the verifier succeeds, because rejection is the intended result.
 
@@ -63,3 +63,4 @@ Steps 2-4 have a **CHECK** button. Each button runs the corresponding verificati
 - [Kyverno ValidatingPolicy](https://kyverno.io/docs/policy-types/validating-policy/)
 - [Kubernetes admission webhooks](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
 - [Kubernetes volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
+
