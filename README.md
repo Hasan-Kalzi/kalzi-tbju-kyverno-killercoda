@@ -15,9 +15,7 @@ After completing the tutorial, a learner should be able to:
 
 ## Run in the browser
 
-Open **Kubernetes Policy-as-Code with Kyverno** from the connected [Killercoda](https://killercoda.com/) creator profile, or use the direct published scenario URL supplied by the authors.
-
-The direct public scenario URL still needs to be recorded here before the final course hand-in. The repository and proposal links identify the source and registration; they do not launch the browser environment.
+[Start the tutorial in Killercoda](https://killercoda.com/hasan-k/scenario/kubernetes-policy-as-code). Sign in using one of Killercoda's offered free options to start the environment.
 
 Killercoda supplies a temporary Kubernetes cluster and terminal. No local Kubernetes installation, cloud subscription or external secrets are used by this exercise.
 
@@ -95,7 +93,7 @@ The tutorial demonstrates a check that could be used in CI; it does not configur
 
 ## Delivery checks for the authors
 
-- Record the direct public scenario URL and verify access from a learner session without creator privileges or paid services.
+- Verify access through the published scenario link from a learner session without creator privileges or paid services.
 - After publishing documentation changes, check the introduction, figure and closing page in Killercoda.
 - Retain a fresh run through every step and all CHECK buttons.
 - Obtain Tobias's independent walkthrough and the arranged reviewers' feedback.

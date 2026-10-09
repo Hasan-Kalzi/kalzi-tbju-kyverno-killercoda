@@ -85,6 +85,16 @@ The verifier exits with code `0` on success. Our BusyBox container only sleeps: 
 
 ## Check the complete workflow
 
+Each script verifies a different stage:
+
+| Script | What it checks |
+| --- | --- |
+| `verify-policy.sh` | Runs both local CLI evaluations and compares their exit codes and exact evaluation counts with the expected results. |
+| `verify-rejection.sh` | Requires a ready policy, submits the violating manifest using a server-side dry run, and checks the rejection's exit code, webhook text, policy name and reason. |
+| `verify-deployment.sh` | Inspects the live Deployment's volume and mount, waits for rollout, and requires one desired, updated, ready and available replica. |
+
+The shell's `&&` operator starts each command only when the preceding command succeeds. The final message therefore appears only when all three scripts return `0`. An expected rejection inside a script can return `1`; the script checks that result and reports whether the test succeeded.
+
 Run all three verifiers after deploying the corrected workload:
 
 ```bash

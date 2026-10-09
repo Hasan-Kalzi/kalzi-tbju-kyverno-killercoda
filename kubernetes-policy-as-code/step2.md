@@ -33,6 +33,12 @@ Find the volume named `node-config`. Its `hostPath` field refers to the node's `
 
 A read-only mount still exposes the directory's contents. Preventing writes does not prevent access to sensitive node files.
 
+The exact violation is the field `spec.template.spec.volumes[].hostPath`. The policy tests whether that field exists; it does not only forbid the particular path `/etc`.
+
+For `node-config`, `has(volume.hostPath)` is `true`, so `!has(volume.hostPath)` is `false`. The requirement that every volume satisfies the rule is therefore false, and the CLI reports a failed policy evaluation. Once the same policy is installed, its `Deny` action makes the API server reject this request.
+
+The `readOnly: true` setting controls writes through the container's mount. It does not remove the `hostPath` field or prevent reading the node directory, so it cannot satisfy this policy.
+
 ## Test the violating manifest
 
 ```bash
@@ -93,11 +99,22 @@ The corrected manifest satisfies this specific policy. Passing one policy does n
 
 ## Verify both results
 
+The script runs `kyverno apply` twice against the same policy: first for the violating file, then for the corrected file. It captures each command's output and exit code and checks these expected results:
+
+| Manifest | CLI exit code | Required evaluation counts |
+| --- | --- | --- |
+| `insecure-deployment.yaml` | `1` | One failure; zero passes, warnings, errors and skips. |
+| `secure-deployment.yaml` | `0` | One pass; zero failures, warnings, errors and skips. |
+
+The script prints the CLI results so you can inspect them. If either the exit code or the counts differ, verification fails. This prevents a CLI error or a skipped rule from being mistaken for the intended policy violation. When both cases match, the script itself exits with `0`: the expected denial counts as a successful test. It does not submit either Deployment to the cluster.
+
+You can inspect its implementation before running it:
+
+`cat verify-policy.sh`{{exec}}
+
 Run the automated check:
 
 `bash verify-policy.sh`{{exec}}
-
-It requires the expected exit code and evaluation counts for both manifests.
 
 Expected final message:
 

@@ -13,6 +13,14 @@ By the end of this tutorial, you should be able to:
 3. Explain how the policy, kubectl, Kubernetes API server, Kyverno admission controller and workload controllers interact.
 4. Correct the storage request, verify a ready workload, and explain the limits of this policy and the storage choice.
 
+## The concepts behind the exercise
+
+**Policy-as-code** means expressing rules in files that a tool can evaluate, instead of relying only on someone to inspect each change manually. A policy file defines what is allowed; a workload manifest describes what an application requests. Keeping both in Git lets a team review rule changes and test allowed and denied examples repeatedly. Here, the rule is: a Deployment's Pod template must not contain a `hostPath` volume.
+
+**Kyverno** is a Kubernetes policy engine. It can validate resource configurations, mutate them and generate resources. This tutorial uses validation: the Kyverno CLI checks local manifests, and Kyverno's admission controller enforces the installed rule inside the cluster. Kyverno is the evaluator; `disallow-hostpath.yaml` supplies our rule.
+
+**Admission control** is a checkpoint in the Kubernetes API request flow, after authentication and authorisation and before an accepted change is stored. For requests matching our policy, the API server calls Kyverno's validating webhook. Kyverno evaluates the requested Deployment and returns an allow or deny decision. A rejected creation request is not stored and does not create a Pod.
+
 ## Workflow and architecture
 
 ![Two complementary policy checks: the Kyverno CLI evaluates a local manifest before submission; the Kubernetes API server calls Kyverno during admission, rejects hostPath requests, and stores allowed Deployments for workload controllers to reconcile.](./architecture.svg)
@@ -60,7 +68,8 @@ Steps 2-4 have a **CHECK** button. Each button runs the corresponding verificati
 
 ## References
 
+- [Introduction to Kyverno](https://kyverno.io/docs/introduction/)
+- [Kubernetes admission control](https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/)
 - [Kyverno ValidatingPolicy](https://kyverno.io/docs/policy-types/validating-policy/)
 - [Kubernetes admission webhooks](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/)
 - [Kubernetes volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
-
